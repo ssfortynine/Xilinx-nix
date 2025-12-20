@@ -16,7 +16,7 @@ stdenv.mkDerivation (finalAttr: {
   name = "vcs";
 
   __noChroot = true;
-  dontPathchELF = true;
+  dontPatchELF = true;
 
   src = rtl;
 
@@ -34,7 +34,7 @@ stdenv.mkDerivation (finalAttr: {
       -sverilog \
       -full64 \
       -timescale=1ns/1ps \
-      -p $VERDI_HOME/share/PLI/VCS/LINUX64/novas.tab $VERDI_HOME/share/PLI/VCS/LINUX64/pli.a \
+      -P $VERDI_HOME/share/PLI/VCS/LINUX64/novas.tab $VERDI_HOME/share/PLI/VCS/LINUX64/pli.a \
     ${lib.optionalString enableTrace ''
       -debug_access+pp+dmptf+thread \
       -kdb=common_elab,hgldd_all \
@@ -59,7 +59,7 @@ stdenv.mkDerivation (finalAttr: {
       ${finalAttr.finalPackage}/bin/${binName}
 
       mkdir -p "$out"
-      cp -vr "DEMO_SIM_RESULT_DIR"/result/* "$out/"
+      cp -vr "$DEMO_SIM_RESULT_DIR"/result/* "$out/"
     '';
   };
 

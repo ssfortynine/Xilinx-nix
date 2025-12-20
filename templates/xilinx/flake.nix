@@ -62,12 +62,11 @@
           devShells.default = with pkgs;
               mkShell (
                 {
-                  inputsForm = [ demo.demo-compiled ];
+                  inputsForm = [ demo.verilated ];
                   packages = [
                     nixd
                   ];
                 }
-                // demo.demo-compiled.env
               );
         };
     };
