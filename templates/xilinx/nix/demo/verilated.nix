@@ -1,56 +1,37 @@
 {
   lib,
   stdenv,
-  rtl,
   verilator,
-  zlib,
-  python3,
-  thread-num ? 8,
+  rtl,
   enableTrace ? false,
 }:
+
 let
   vName = "V${rtl.target}";
 in
 stdenv.mkDerivation {
-  name = "verilated";
+  pname = "demo-verilated-sim";
+  version = "0.1.0";
 
-  src = rtl;
+  src = ./../../demo/testbench; # 包含 sim_main.cpp
+  nativeBuildInputs = [ verilator ];
 
-  nativeBuildInputs = [
-    verilator
-    python3
-  ];
-
-  # if tracing is enabled(especially in FST format), Verilator usually requires zlib
-  propagatedBuildInputs = lib.optionals enableTrace [ zlib ];
-
-  passthru = {
-    inherit (rtl) target;
-    inherit enableTrace;
-  };
-
-  meta.mainProgram = vName;
-
+  # Verilator 仿真通常需要链接编译后的代码
   buildPhase = ''
     runHook preBuild
 
-    echo "[nix] running verilator"
+    echo "[nix] Verilating and Building C++ Simulator..."
+
     verilator \
-      ${lib.optionalString enableTrace "--trace-fst"} \
-      --timing \
-      --threads ${toString thread-num} \
-      -O1 \
-      --main \
-      --exe \
-      --cc -f filelist.f --top ${rtl.target}
-
-    echo "[nix] building verilated C lib"
-
-    mkdir -p $out/share
-    cp -r obj_dir $out/share/verilated_src
-
-    cd obj_dir
-    make -j "$NIX_BUILD_CORES" -f ${vName}.mk ${vName}
+      --cc \
+      -f ${rtl}/filelist.f \
+      --top ${rtl.target} \
+      --exe sim_main.cpp \
+      --build \
+      -j $NIX_BUILD_CORES \
+      -o ${vName} \
+      ${lib.optionalString enableTrace "--trace"} \
+      -Wall
 
     runHook postBuild
   '';
@@ -58,13 +39,15 @@ stdenv.mkDerivation {
   installPhase = ''
     runHook preInstall
 
-    mkdir -p $out/{include,lib,bin}
-    cp *.h $out/include
-    cp *.a $out/lib
-    cp ${vName} $out/bin
+    mkdir -p $out/bin
+    # Verilator 默认在 obj_dir 下生成二进制文件
+    cp obj_dir/${vName} $out/bin/
 
     runHook postInstall
   '';
 
+  # 禁用安全硬化标志，因为 Verilator 对特定的编译优化比较敏感
   hardeningDisable = [ "fortify" ];
+
+  meta.mainProgram = vName;
 }
