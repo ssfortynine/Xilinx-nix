@@ -3,7 +3,7 @@
   stdenv,
   verilator,
   zlib,
-  python3
+  python3,
   rtl,
   enableTrace ? false,
   thread-num ? 8,
