@@ -3,7 +3,6 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    flake-utils.url = "github:numtide/flake-utils";
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
@@ -19,7 +18,6 @@
       self, 
       nixpkgs,
       flake-parts,
-      flake-utils,
       ...
     }:
     let 
@@ -37,37 +35,53 @@
         ];
 
         flake.overlays.default = overlay;
-
         perSystem = 
         { system, pkgs, ... }:
         {
           _module.args.pkgs = import nixpkgs {
               inherit system;
-              overlays = with inputs; [
-                overlay
-              ];
+              overlays = [ overlay ];
+              config.allowUnfree = true; 
           };
+
           legacyPackages = pkgs;
 
           treefmt = {
             projectRootFile = "flake.nix";
-            programs.nixfmt = {
-              enable = true;
-            }; 
-            programs.verible-verilog-format = {
-              enable = true;
-            };
+            programs.nixfmt.enable = true;
+            programs.verible-verilog-format.enable = true;
           };
 
-          devShells.default = with pkgs;
-              mkShell (
-                {
-                  inputsForm = [ demo.verilated ];
-                  packages = [
-                    nixd
-                  ];
-                }
-              );
+          devShells.default = pkgs.mkShell {
+            inputsFrom = [ 
+              pkgs.demo.verilated 
+              pkgs.demo.vcs 
+            ];
+
+            packages = with pkgs; [
+              # 开发辅助
+              nixd
+              verible
+              gtkwave  
+
+              demo.verilated
+              demo.vcs
+              
+              vcs-fhs-env
+              xilinx-fhs-env
+            ];
+
+            shellHook = ''
+              echo "--- RTL Development Shell ---"
+              echo "Available Simulators:"
+              echo "  - VDemo (Verilator)"
+              echo "  - demo-vcs-simulator (VCS, needs --impure)"
+              echo ""
+              echo "Available FHS Envs:"
+              echo "  - vcs-fhs-env"
+              echo "  - xilinx-fhs-env"
+            '';
+          };
         };
     };
 }
