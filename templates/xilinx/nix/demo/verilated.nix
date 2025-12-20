@@ -37,7 +37,7 @@ stdenv.mkDerivation {
       --timing \
       --threads ${toString thread-num} \
       -O1 \
-      --exe ./testbench/sim_main.cpp \
+      --exe h/sim_main.cpp \
       --cc -f ${rtl}/filelist.f \
       --top ${rtl.target} \
       --Mdir obj_dir \
