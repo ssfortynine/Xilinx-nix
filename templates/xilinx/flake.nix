@@ -55,7 +55,6 @@
           devShells.default = pkgs.mkShell {
             inputsFrom = [ 
               pkgs.demo.verilated 
-              pkgs.demo.vcs 
             ];
 
             packages = with pkgs; [
