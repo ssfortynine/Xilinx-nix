@@ -9,5 +9,6 @@ in
 final: prev: {
   vcs-fhs-env = final.callPackage ./pkgs/vcs-fhs-env.nix { inherit getEnv';};
   xilinx-fhs-env = final.callPackage ./pkgs/xilinx-fhs-env.nix { inherit getEnv';};
-  demo = final.callPackage ./demo { };
+  
+  demo = final.lib.recurseIntoAttrs (final.callPackage ./demo { });
 }
