@@ -15,7 +15,7 @@ stdenv.mkDerivation {
   pname = "demo-verilated-sim";
   version = "0.1.0";
 
-  src = ./../../demo; # 包含 sim_main.cpp
+  src = ./../../demo; 
   nativeBuildInputs = [ verilator ];
 
   propagateBuildInputs = lib.optionals enableTrace [ zlib ];
@@ -39,12 +39,14 @@ stdenv.mkDerivation {
       --exe sim_main.cpp \
       --cc -f ${rtl}/filelist.f \
       --top ${rtl.target} \
-      --Mdir obj_dir \
-      -Wall
 
     echo "[nix] building verilated simulator"
 
-    make -j "$NIX_BUILD_CORES" -C obj_dir -f ${vName}.mk ${vName}
+    mkdir -p $out/share
+    cp -r obj_dir $out/share/verilated_src
+
+    cd obj_dir
+    make -j "$NIX_BUILD_CORES" -f ${vName}.mk ${vName}
 
     runHook postBuild
   '';
