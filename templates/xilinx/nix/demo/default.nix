@@ -2,7 +2,7 @@
 lib.makeScope newScope (
   scope:
   let
-    designTarget = "Demo";
+    designTarget = "demo";
   in
   {
     # RTL
