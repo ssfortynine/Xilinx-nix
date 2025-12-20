@@ -45,9 +45,6 @@
           };
 
           legacyPackages = pkgs;
-          packages = {
-            inherit (pkgs.demo) verilated verilated-trace vcs vcs-trace;
-          };
 
           treefmt = {
             projectRootFile = "flake.nix";
@@ -58,6 +55,7 @@
           devShells.default = pkgs.mkShell {
             inputsFrom = [ 
               pkgs.demo.verilated 
+              pkgs.demo.vcs 
             ];
 
             packages = with pkgs; [
@@ -67,7 +65,8 @@
               gtkwave  
 
               demo.verilated
-
+              demo.vcs
+              
               vcs-fhs-env
               xilinx-fhs-env
             ];
