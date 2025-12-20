@@ -16,7 +16,7 @@ stdenv.mkDerivation {
   pname = "demo-verilated-sim";
   version = "0.1.0";
 
-  src = ./../..; 
+  src = ./../../demo; 
   nativeBuildInputs = [ verilator python3 ];
 
   propagateBuildInputs = lib.optionals enableTrace [ zlib ];
@@ -37,7 +37,7 @@ stdenv.mkDerivation {
       --timing \
       --threads ${toString thread-num} \
       -O1 \
-      --exe ./demo/sim_main.cpp \
+      --exe ./testbench/sim_main.cpp \
       --cc -f ${rtl}/filelist.f \
       --top ${rtl.target} \
       --Mdir obj_dir \
