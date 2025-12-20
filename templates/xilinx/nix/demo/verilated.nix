@@ -39,6 +39,8 @@ stdenv.mkDerivation {
       --exe sim_main.cpp \
       --cc -f ${rtl}/filelist.f \
       --top ${rtl.target} \
+      --Mdir obj_dir \
+      -Wall
 
     echo "[nix] building verilated simulator"
 
