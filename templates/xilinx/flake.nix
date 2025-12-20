@@ -21,7 +21,7 @@
       ...
     }:
     let 
-      overlay = import ./overlay.nix;
+      overlay = import ./nix/overlay.nix;
     in
     flake-parts.lib.mkFlake { inherit inputs; } {
         systems = [ 
