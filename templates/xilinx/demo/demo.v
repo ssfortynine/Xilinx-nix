@@ -4,7 +4,7 @@
 // Function    : Up counter
 // Coder      : Deepak
 //-----------------------------------------------------
-module up_counter    (
+module demo    (
 out     ,  // Output of the counter
 enable  ,  // enable for counter
 clk     ,  // clock Input
@@ -24,3 +24,4 @@ end else if (enable) begin
   out <= out + 1;
 end
 
+endmodule
