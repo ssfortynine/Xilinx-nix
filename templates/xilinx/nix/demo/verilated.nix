@@ -2,8 +2,10 @@
   lib,
   stdenv,
   verilator,
+  zlib,
   rtl,
   enableTrace ? false,
+  thread-num ? 8,
 }:
 
 let
@@ -16,38 +18,48 @@ stdenv.mkDerivation {
   src = ./../../demo; # 包含 sim_main.cpp
   nativeBuildInputs = [ verilator ];
 
-  # Verilator 仿真通常需要链接编译后的代码
+  propagateBuildInputs = lib.optionals enableTrace [ zlib ];
+
+  passthru = {
+    inherit (rtl) target;
+  };
+
+  meta.mainProgram = vName;
+
   buildPhase = ''
     runHook preBuild
 
-    echo "[nix] Verilating and Building C++ Simulator..."
-
+    echo "[nix] running verilator"
+    
     verilator \
-      --cc \
-      -f ${rtl}/filelist.f \
-      --top ${rtl.target} \
-      --exe sim_main.cpp \
-      --build \
-      -j $NIX_BUILD_CORES \
-      -o ${vName} \
       ${lib.optionalString enableTrace "--trace"} \
+      --timing \
+      --threads ${toString thread-num} \
+      -O1 \
+      --exe sim_main.cpp \
+      --cc -f ${rtl}/filelist.f \
+      --top ${rtl.target} \
+      --Mdir obj_dir \
       -Wall
+
+    echo "[nix] building verilated simulator"
+
+    make -j "$NIX_BUILD_CORES" -C obj_dir -f ${vName}.mk ${vName}
 
     runHook postBuild
   '';
-
+  
   installPhase = ''
     runHook preInstall
 
-    mkdir -p $out/bin
-    # Verilator 默认在 obj_dir 下生成二进制文件
-    cp obj_dir/${vName} $out/bin/
+    mkdir -p $out/{include,lib,bin}
+    cp *.h $out/include
+    cp *.a $out/lib
+    cp ${vName} $out/bin
 
     runHook postInstall
   '';
 
-  # 禁用安全硬化标志，因为 Verilator 对特定的编译优化比较敏感
   hardeningDisable = [ "fortify" ];
 
-  meta.mainProgram = vName;
 }
