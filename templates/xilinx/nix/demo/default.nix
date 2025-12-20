@@ -7,17 +7,17 @@ lib.makeScope newScope (
   {
     # RTL
     rtl = scope.callPackage ./rtl.nix { target = designTarget; };
+
     # Verilator
-    verilated = scope.callPackage ./verilated.nix {
-      rtl = scope.rtl; 
+    verilated = scope.callPackage ./verilated.nix { 
+      enableTrace = false; 
     };
-    verilated-trace = scope.verilated.override { enable-trace = true; };
+    verilated-trace = scope.verilated.override { enableTrace = true; };
 
     # VCS
-    vcs = scope.callPackage ./vcs.nix {
-      rtl = scope.rtl;
+    vcs = scope.callPackage ./vcs.nix { 
+      enableTrace = false; 
     };
-    vcs-trace = scope.vcs.override { enable-trace = true; };
-    
+    vcs-trace = scope.vcs.override { enableTrace = true; };
   }
 )
