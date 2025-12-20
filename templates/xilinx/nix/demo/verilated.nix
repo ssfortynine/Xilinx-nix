@@ -6,7 +6,7 @@
   zlib,
   python3,
   thread-num ? 8,
-  enableTrace ? true,
+  enableTrace ? false,
 }:
 let
   vName = "V${rtl.target}";

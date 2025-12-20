@@ -5,7 +5,7 @@
   rtl,
   vcs-fhs-env,
   runCommand,
-  enableTrace ? true,
+  enableTrace ? false,
   enableCover ? true,
 }:
 let 
