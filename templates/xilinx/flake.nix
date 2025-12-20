@@ -45,6 +45,9 @@
           };
 
           legacyPackages = pkgs;
+          packages = {
+            inherit (pkgs.demo) verilated verilated-trace vcs vcs-trace;
+          };
 
           treefmt = {
             projectRootFile = "flake.nix";
