@@ -15,7 +15,7 @@ stdenv.mkDerivation {
   pname = "demo-verilated-sim";
   version = "0.1.0";
 
-  src = ./../../demo; 
+  src = ./../../demo/testbench; 
   nativeBuildInputs = [ verilator ];
 
   propagateBuildInputs = lib.optionals enableTrace [ zlib ];
