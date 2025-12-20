@@ -1,38 +1,50 @@
 #include <iostream>
 #include <verilated.h>
-#include "Vdemo.h"          
-#include "verilated_vcd_c.h" // 必须包含这个头文件
+#include "Vdemo.h"
+
+// 只有在 Nix 传入了 --trace 时，VM_TRACE 宏才会被定义
+#ifdef VM_TRACE
+#include "verilated_vcd_c.h"
+#endif
 
 int main(int argc, char** argv) {
     Verilated::commandArgs(argc, argv);
     Vdemo* top = new Vdemo;
 
-    // --- 波形开启逻辑 ---
-    Verilated::traceEverOn(true); // 开启追踪功能
+#ifdef VM_TRACE
+    // 只要开启了 Trace 编译选项，就自动初始化波形
+    Verilated::traceEverOn(true);
     VerilatedVcdC* tfp = new VerilatedVcdC;
-    top->trace(tfp, 99);          // 追踪深度
-    tfp->open("waveform.vcd");    // 打开文件
-    std::cout << "[SIM] Waveform dumping started: waveform.vcd" << std::endl;
+    top->trace(tfp, 99);
+    tfp->open("waveform.vcd");
+    std::cout << "[SIM] Trace support detected. Waveform will be saved to waveform.vcd" << std::endl;
+#endif
 
     top->clk = 0;
     top->reset = 1;
 
     int main_time = 0;
-    while (main_time < 500) { // 增加仿真时间确保有足够数据
+    while (main_time < 500) {
         if (main_time > 20) top->reset = 0;
         if ((main_time % 5) == 0) top->clk = !top->clk;
 
         top->eval();
 
-        // --- 核心：每一时刻都要 dump 数据 ---
-        tfp->dump(main_time); 
-        
+#ifdef VM_TRACE
+        // 自动 dump 波形
+        tfp->dump(main_time);
+#endif
         main_time++;
     }
 
     top->final();
-    tfp->close(); // 必须 close，否则文件可能损坏或为空
+
+#ifdef VM_TRACE
+    tfp->close();
     delete tfp;
+    std::cout << "[SIM] Simulation finished. Waveform file closed." << std::endl;
+#endif
+
     delete top;
     return 0;
 }
