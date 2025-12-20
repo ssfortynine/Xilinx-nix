@@ -8,14 +8,14 @@ let
   
   rtlFiles = fs.fileFilter (file: 
     lib.hasSuffix ".v" file.name || lib.hasSuffix ".sv" file.name
-  ) ./../../demo/src;
+  ) ./../../demo;
 
 in
 stdenvNoCC.mkDerivation {
   name = "${target}-rtl";
 
   src = fs.toSource {
-    root = ./../../demo;
+    root = ./../..;
     fileset = rtlFiles;
   };
 
