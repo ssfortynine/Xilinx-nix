@@ -13,7 +13,7 @@ stdenv.mkDerivation {
   pname = "demo-verilated-sim";
   version = "0.1.0";
 
-  src = ./../../demo/testbench; # 包含 sim_main.cpp
+  src = ./../../demo; # 包含 sim_main.cpp
   nativeBuildInputs = [ verilator ];
 
   # Verilator 仿真通常需要链接编译后的代码
