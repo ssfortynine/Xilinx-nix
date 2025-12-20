@@ -65,8 +65,7 @@
               gtkwave  
 
               demo.verilated
-              demo.vcs
-              
+
               vcs-fhs-env
               xilinx-fhs-env
             ];
