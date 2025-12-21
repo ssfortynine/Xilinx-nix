@@ -1,4 +1,4 @@
-{ genEnv', fetchFromGithub }:
+{ getEnv', fetchFromGithub }:
 let
   nixpkgsSrcs = fetchFromGithub {
     owner = "NixOS";
@@ -12,7 +12,7 @@ let
     config.allowUnfree = true;
   };
 
-  xilinxHome = genEnv' "XILINX_FHS_HOME"; 
+  xilinxHome = getEnv' "XILINX_FHS_HOME"; 
   
 in
 lockedPkgs.buildFHSEnv {
