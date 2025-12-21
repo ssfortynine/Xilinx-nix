@@ -1,6 +1,6 @@
-{ getEnv', fetchFromGithub }:
+{ getEnv', fetchFromGitHub }:
 let
-  nixpkgsSrcs = fetchFromGithub {
+  nixpkgsSrcs = fetchFromGitHub {
     owner = "NixOS";
     repo = "nixpkgs";
     rev = "05730f34825134603957864f7fd94101e403d6fb"; # nixos-23.11
