@@ -3,8 +3,8 @@ let
   nixpkgsSrcs = fetchFromGitHub {
     owner = "NixOS";
     repo = "nixpkgs";
-    rev = "05730f34825134603957864f7fd94101e403d6fb"; # nixos-23.11
-    hash = "sha256-SNC879Z986VcaY1H/0vG9yAn87A0G3x5iT9P6434390=";
+    rev = "c374d94f1536013ca8e92341b540eba4c22f9c62";
+    hash = "sha256-Z/ELQhrSd7bMzTO8r7NZgi9g5emh+aRKoCdaAv5fiO0=";
   };
 
   lockedPkgs = import nixpkgsSrcs {
@@ -12,7 +12,7 @@ let
     config.allowUnfree = true;
   };
 
-  xilinxHome = getEnv' "XILINX_FHS_HOME"; 
+  xilinxHome = getEnv' "XILINX_STATIC_HOME"; 
   
 in
 lockedPkgs.buildFHSEnv {
