@@ -7,7 +7,7 @@
 #
 # For convenience, we still use the nixpkgs defined in flake to "callPackage" this derivation.
 # But the buildFHSEnv, targetPkgs is still from the locked nixpkgs.
-{ genEnv', fetchFromGithub }:
+{ getEnv', fetchFromGithub }:
 let 
   nixpkgsSrcs = fetchFromGithub {
     owner = "NixOS";
@@ -21,8 +21,8 @@ let
     system = "x86_64-linux";
   };
 
-  vcStaticHome = genEnv' "VCS_FHS_HOME";
-  snpslmdLicenseFile = genEnv' "SNPSLMD_LICENSE_FILE";
+  vcStaticHome = getEnv' "VCS_FHS_HOME";
+  snpslmdLicenseFile = getEnv' "SNPSLMD_LICENSE_FILE";
 in
 lockedPkgs.buildFHSEnv {
   name = "vcs-fhs-env";
