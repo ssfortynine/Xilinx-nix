@@ -7,9 +7,9 @@
 #
 # For convenience, we still use the nixpkgs defined in flake to "callPackage" this derivation.
 # But the buildFHSEnv, targetPkgs is still from the locked nixpkgs.
-{ getEnv', fetchFromGithub }:
+{ getEnv', fetchFromGitHub }:
 let 
-  nixpkgsSrcs = fetchFromGithub {
+  nixpkgsSrcs = fetchFromGitHub {
     owner = "NixOS";
     repo = "nixpkgs";
     rev = "c374d94f1536013ca8e92341b540eba4c22f9c62";
