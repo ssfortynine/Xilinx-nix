@@ -21,8 +21,8 @@ let
     system = "x86_64-linux";
   };
 
-  vcStaticHome = getEnv' "VCS_FHS_HOME";
-  snpslmdLicenseFile = getEnv' "SNPSLMD_LICENSE_FILE";
+  vcStaticHome = getEnv' "VC_STATIC_HOME";
+  lmLicenseFile = getEnv' "LM_LICENSE_FILE";
 in
 lockedPkgs.buildFHSEnv {
   name = "vcs-fhs-env";
@@ -34,23 +34,22 @@ lockedPkgs.buildFHSEnv {
 
     export TCL_TZ=UTC
     export VC_STATIC_HOME=$VC_STATIC_HOME
-    export VCS_HOME=$VC_STATIC_HOME/vcs-mx
+    export VCS_HOME=$VC_STATIC_HOME/vcs/U-2023.03-SP2
     export VCS_TARGET_ARCH=amd64
     export VCS_ARCH_OVERRIDE=linux
-    export VERDI_HOME=$VC_STATIC_HOME/verdi
-    export NOVAS_HOME=$VC_STATIC_HOME/verdi
-    export SPYGLASS_HOME=$VC_STATIC_HOME/SG_COMPAT/SPYGLASS_HOME
+    export VERDI_HOME=$VC_STATIC_HOME/verdi/V-2023.12-SP2
+    export NOVAS_HOME=$VC_STATIC_HOME/verdi/V-2023.12-SP2
     export SNPS_VERDI_CBUG_LCA=1
-    export SNPSLMD_LICENSE_FILE=${snpslmdLicenseFile}
+    export LM_LICENSE_FILE=${lmLicenseFile}
 
-    export PATH=$VC_STATIC_HOME/bin:$PATH
-    export PATH=$VC_STATIC_HOME/verdi/bin:$PATH
-    export PATH=$VC_STATIC_HOME/vcs-mx/bin:$PATH
-    export PATH=$VC_STATIC_HOME/SG_COMPAT/SPYGLASS_HOME/bin:$PATH
+    export PATH=$PATH:$VCS_HOME/gui/dve/bin:$PATH
+    export PATH=$PATH:$VCS_HOME/bin:$PATH
+    export PATH=$PATH:$VERDI_HOME/bin:$PATH
+    export PATH=$PATH:$SCL_HOME/linux64/bin:$PATH
 
     export LD_LIBRARY_PATH=/usr/lib64/
-    export LD_LIBRARY_PATH=$VC_STATIC_HOME/verdi/share/PLI/lib/LINUX64:$LD_LIBRARY_PATH
-    export LD_LIBRARY_PATH=$VC_STATIC_HOME/verdi/share/NPI/lib/LINUX64:$LD_LIBRARY_PATH
+    export LD_LIBRARY_PATH=$VERDI_HOME/share/PLI/lib/LINUX64:$LD_LIBRARY_PATH
+    export LD_LIBRARY_PATH=$VERDI_HOME/share/NPI/lib/LINUX64:$LD_LIBRARY_PATH
 
     export _oldVcsEnvPath="$PATH"
     preHook() {
