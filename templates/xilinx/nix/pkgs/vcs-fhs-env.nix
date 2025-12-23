@@ -8,7 +8,7 @@
 # For convenience, we still use the nixpkgs defined in flake to "callPackage" this derivation.
 # But the buildFHSEnv, targetPkgs is still from the locked nixpkgs.
 { getEnv', fetchFromGitHub }:
-let 
+let
   nixpkgsSrcs = fetchFromGitHub {
     owner = "NixOS";
     repo = "nixpkgs";
@@ -17,16 +17,13 @@ let
   };
 
   # The vcs we have only support x86-64_linux
-  lockedPkgs = import nixpkgsSrcs {
-    system = "x86_64-linux";
-  };
+  lockedPkgs = import nixpkgsSrcs { system = "x86_64-linux"; };
 
   vcStaticHome = getEnv' "VC_STATIC_HOME";
   lmLicenseFile = getEnv' "LM_LICENSE_FILE";
 in
 lockedPkgs.buildFHSEnv {
   name = "vcs-fhs-env";
-
   profile = ''
     [ ! -e "${vcStaticHome}"  ] && echo "env VC_STATIC_HOME='${vcStaticHome}' points to unknown location" && exit 1
     [ ! -d "${vcStaticHome}"  ] && echo "VC_STATIC_HOME='${vcStaticHome}' not accessible" && exit 1
@@ -57,7 +54,7 @@ lockedPkgs.buildFHSEnv {
     }
     export -f preHook
   '';
- targetPkgs = (
+  targetPkgs = (
     ps: with ps; [
       libGL
       util-linux
@@ -111,3 +108,4 @@ lockedPkgs.buildFHSEnv {
     ]
   );
 }
+

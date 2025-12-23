@@ -63,12 +63,7 @@
               nixd
               verible
               gtkwave  
-
-              demo.verilated
-              demo.vcs
-              
-              vcs-fhs-env
-              xilinx-fhs-env
+              # xilinx-fhs-env
             ];
 
             shellHook = ''
