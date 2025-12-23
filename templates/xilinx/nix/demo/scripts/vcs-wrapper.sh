@@ -2,7 +2,7 @@
 
 _EXTRA_ARGS="$@"
 
-# 禁用 Synopsys 内置的堆栈追踪工具，防止其尝试调用 GDB
+# TODO:Disable Synopsys's built-in stack tracing tool to prevent it from attempting to call GDB
 export SNPS_NO_STACK_TRACE=1
 export VCS_RUNTIME_OFF=1
 
@@ -39,11 +39,11 @@ _daidir=$(basename "$_VCS_SIM_DAIDIR")
 
 export LD_LIBRARY_PATH="$PWD/$_daidir:$LD_LIBRARY_PATH"
 
-# 启动仿真，保留 setarch -R 以禁用 ASLR 提高仿真稳定性
+# Start the simulation, keeping `setarch -R` enabled to disable ASLR and improve simulation stability
 echo "[wrapper] Starting VCS simulation..."
 "$_VCS_FHS_ENV" -c "setarch $(uname -m) -R ./$_emu_name $_CM_ARG $_EXTRA_ARGS" &> >(tee ./vcs-emu-journal.log)
 
-# 如果开启了覆盖率，生成文本报告
+# If coverage is enabled, generate a text report.
 if [ -n "$_VCS_COV_DIR" ]; then
   echo "[wrapper] Generating coverage report..."
   "$_VCS_FHS_ENV" -c "urg -dir ./$_VCS_COV_DIR -format text" &>> ./vcs-emu-journal.log
