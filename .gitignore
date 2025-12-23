@@ -1,9 +1,12 @@
 templates/xilinx/result/
 templates/xilinx/result
 templates/xilinx/demo-sim-result/
+templates/xilinx/verdiLog/
 
 templates/xilinx/vcs-emu-journal.log
 
 *.vdb/
 *.daidir/
+templates/xilinx/novas.rc
+templates/xilinx/novas.conf
 vcs-emu-journal.log

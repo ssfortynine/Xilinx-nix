@@ -46,6 +46,7 @@ stdenv.mkDerivation (finalAttr: {
     ${lib.optionalString enableCover ''
       -cm line+cond+fsm+tgl+branch+assert \
       -cm_dir ${coverageName} ''} \
+      -top tb_demo \
       -file filelist.f \
       -o ${binName}
 

@@ -113,6 +113,22 @@ lockedPkgs.buildFHSEnv {
 
       # verdi other dependencies
       dejavu_fonts
+      freetype
+      fontconfig
+      xorg.libXcursor
+      xorg.libXinerama
+      xorg.libXtst
+      xorg.libXt    
+      xorg.libXmu    
+      xorg.libXpm     
+      xorg.libXaw
+      xorg.libSM               
+      xorg.libICE          
+      xorg.libXrandr       
+      numactl
+      libpng
+      libjpeg
+      expat
     ]
   );
 }
