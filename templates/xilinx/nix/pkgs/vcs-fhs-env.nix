@@ -44,6 +44,7 @@ lockedPkgs.buildFHSEnv {
     export PATH=$PATH:$VERDI_HOME/bin:$PATH
     export PATH=$PATH:$SCL_HOME/linux64/bin:$PATH
 
+    export QT_X11_NO_MITSHM=1
     export LD_LIBRARY_PATH=/usr/lib64/
     export LD_LIBRARY_PATH=$VERDI_HOME/share/PLI/lib/LINUX64:$LD_LIBRARY_PATH
     export LD_LIBRARY_PATH=$VERDI_HOME/share/NPI/lib/LINUX64:$LD_LIBRARY_PATH
@@ -110,6 +111,8 @@ lockedPkgs.buildFHSEnv {
       gdb
       strace 
 
+      # verdi other dependencies
+      dejavu_fonts
     ]
   );
 }

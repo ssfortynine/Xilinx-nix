@@ -19,5 +19,8 @@ lib.makeScope newScope (
       enableTrace = false; 
     };
     vcs-trace = scope.vcs.override { enableTrace = true; };
+
+    # Verdi
+    verdi = scope.callPackage ./verdi.nix { };
   }
 )
