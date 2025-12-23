@@ -25,8 +25,12 @@ stdenv.mkDerivation (finalAttr: {
   buildPhase = ''
     runHook preBuild
 
+    export HOME=$TMPDIR 
+
     echo "[nix] running VCS"
     fhsBash=${vcs-fhs-env}/bin/vcs-fhs-env
+    echo "[nix] Checking environment inside FHS..."
+    "$fhsBash" -c "ls -d $VC_STATIC_HOME" || (echo "Error: VC_STATIC_HOME not accessible"; exit 1)
 
     VERDI_HOME=$("$fhsBash" -c "printenv VERDI_HOME")
 

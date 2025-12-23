@@ -1,0 +1,9 @@
+templates/xilinx/result/
+templates/xilinx/result
+templates/xilinx/demo-sim-result/
+
+templates/xilinx/vcs-emu-journal.log
+
+*.vdb/
+*.daidir/
+vcs-emu-journal.log

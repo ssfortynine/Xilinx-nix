@@ -105,6 +105,11 @@ lockedPkgs.buildFHSEnv {
       xorg.libXcomposite
       xorg.libXi
       zlib
+
+      # Synopsys debug tools dependencies
+      gdb
+      strace 
+
     ]
   );
 }
