@@ -2,7 +2,6 @@
 #include <verilated.h>
 #include "Vdemo.h"
 
-// 注意：这里改为 #if 而不是 #ifdef
 #if VM_TRACE
 #include "verilated_vcd_c.h"
 #endif
@@ -11,7 +10,6 @@ int main(int argc, char** argv) {
     Verilated::commandArgs(argc, argv);
     Vdemo* top = new Vdemo;
 
-    // 使用 #if VM_TRACE 检查宏的值是否为 1
 #if VM_TRACE
     std::cout << "[SIM] Trace support detected. Waveform will be saved to waveform.vcd" << std::endl;
     Verilated::traceEverOn(true);
