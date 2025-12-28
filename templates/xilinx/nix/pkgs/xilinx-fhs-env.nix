@@ -1,30 +1,37 @@
-{ getEnv', fetchFromGitHub }:
+{ pkgs ? import <nixpkgs> { }, getEnv' }:
 let
-  nixpkgsSrcs = fetchFromGitHub {
-    owner = "NixOS";
-    repo = "nixpkgs";
-    rev = "c374d94f1536013ca8e92341b540eba4c22f9c62";
-    hash = "sha256-Z/ELQhrSd7bMzTO8r7NZgi9g5emh+aRKoCdaAv5fiO0=";
-  };
-
-  lockedPkgs = import nixpkgsSrcs {
-    system = "x86_64-linux";
-    config.allowUnfree = true;
-  };
-
   xilinxHome = getEnv' "XILINX_STATIC_HOME"; 
-  
 in
-lockedPkgs.buildFHSEnv {
-  name = "xilinx-vitis-fhs-env";
+pkgs.buildFHSEnv {
+  name = "xilinx-fhs-env";
 
   profile = ''
     export LC_NUMERIC="en_US.UTF-8"
 
-    if [ -n "${xilinxHome}" ] && [ -d "${xilinxHome}" ]; then
-      source ${xilinxHome}/Vitis_HLS/*/settings64.sh
-    elif [ -d "$HOME/Xilinx/Vitis_HLS" ]; then
-      source ~/Xilinx/Vitis_HLS/*/settings64.sh
+    if [ -d "${xilinxHome}/Vivado" ]; then
+      for s in ${xilinxHome}/Vivado/*/settings64.sh; do
+        if [ -f "$s" ]; then
+          echo "[FHS] Sourcing Vivado settings from $s"
+          source "$s"
+        fi
+      done
+    fi
+    if [ -d "${xilinxHome}/Vitis_HLS" ]; then
+      for s in ${xilinxHome}/Vitis_HLS/*/settings64.sh; do
+        if [ -f "$s" ]; then
+          echo "[FHS] Sourcing Vitis_HLS settings from $s"
+          source "$s"
+        fi
+      done
+    fi
+
+    if [ -d "${xilinxHome}/Vitis" ]; then
+      for s in ${xilinxHome}/Vitis/*/settings64.sh; do
+        if [ -f "$s" ]; then
+          echo "[FHS] Sourcing Vitis settings from $s"
+          source "$s"
+        fi
+      done
     fi
     
     echo "Xilinx FHS Environment Loaded."
@@ -33,7 +40,6 @@ lockedPkgs.buildFHSEnv {
 
   targetPkgs = (ps: with ps; 
     let
-      # 修复 ncurses5 以提供 libtinfo.so.5，并包含 termlib 支持
       ncurses' = ncurses5.overrideAttrs (old: {
         configureFlags = old.configureFlags ++ [ "--with-termlib" ];
         postFixup = "";

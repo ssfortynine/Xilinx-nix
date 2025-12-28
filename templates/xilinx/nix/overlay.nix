@@ -9,7 +9,7 @@ in
 final: prev: {
   vcs-fhs-env = final.callPackage ./pkgs/vcs-fhs-env.nix { inherit getEnv';};
   xilinx-fhs-env = final.callPackage ./pkgs/xilinx-fhs-env.nix { inherit getEnv';};
-  xilinx-simlib = final.callPackage ./pkgs/xilinx-simlib.nix { };
+  xilinx-simlib = final.callPackage ./demo/xilinx-simlib.nix { };
   demo = final.callPackage ./demo { };
 
 }
