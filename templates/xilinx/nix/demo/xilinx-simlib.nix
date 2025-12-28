@@ -14,6 +14,10 @@ stdenv.mkDerivation {
   buildPhase = ''
     runHook preBuild
     export HOME=$TMPDIR 
+
+    echo "[nix] running xilinx"
+    fhsBash=${xilinx-fhs-env}/bin/xilinx-fhs-env
+
     mkdir -p $out/simlib
 
     cat > gen_lib.tcl <<EOF
@@ -22,7 +26,7 @@ stdenv.mkDerivation {
     EOF
 
     # Using xilinx environment to compile with Xilinx libraries
-    ${xilinx-fhs-env}/bin/xilinx-fhs-env -c "vivado -mode batch -notrace -source gen_lib.tcl"
+    "$fhsBash" vivado -mode batch -notrace -source gen_lib.tcl
     runHook postBuild
   '';
 
