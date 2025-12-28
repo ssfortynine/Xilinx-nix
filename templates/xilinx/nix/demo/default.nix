@@ -20,6 +20,10 @@ lib.makeScope newScope (
     };
     vcs-trace = scope.vcs.override { enableTrace = true; };
 
+    vcs-xilinx = scope.callPackage ./vcs-xilinx.nix { 
+      enableTrace = true; 
+    };
+
     # Verdi
     verdi = scope.callPackage ./verdi.nix { };
   }
