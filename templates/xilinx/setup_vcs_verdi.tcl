@@ -1,14 +1,14 @@
 # ---------------- Create_project ----------------
 set project_name "vivado_vcs_project"
 set project_dir  "./vivado_prj"
-set top_module   "tb_demo"
+set top_module   "tb_vivado_demo"
 set sim_set      "sim_1"
 set part_name    "xc7k70tfbv676-1"
 
 set script_path [file normalize [info script]]
 set base_dir    [file dirname $script_path]
 set rtl_dir     [file normalize "$base_dir/demo/src"]
-set tb_file     [file normalize "$base_dir/demo/src/tb_demo.sv"]
+set tb_file     [file normalize "$base_dir/demo/src/tb_vivado_demo.sv"]
 set dump_do     [file normalize "$base_dir/vcs_dump.do"]
 
 set simlib_path $::env(XILINX_SIMLIB_PATH)
