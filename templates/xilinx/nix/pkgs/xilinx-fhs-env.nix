@@ -85,7 +85,6 @@ pkgs.buildFHSEnv {
     }
     export -f preHook
 
-
     echo "[FHS] VCS FHS Environment Loaded."
   '';
 

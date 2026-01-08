@@ -20,10 +20,6 @@ lib.makeScope newScope (
     };
     vcs-trace = scope.vcs.override { enableTrace = true; };
 
-    vcs-xilinx = scope.callPackage ./vcs-xilinx.nix { 
-      enableTrace = true; 
-    };
-
     # vivado simulation flow
     vivado-scripts = scope.callPackage ./vivado-sim.nix { };
     vivado-run-sim = scope.vivado-scripts.run-sim;

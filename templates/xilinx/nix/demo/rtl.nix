@@ -19,7 +19,6 @@ stdenvNoCC.mkDerivation {
     fileset = rtlFiles;
   };
 
-  # 纯文件处理逻辑
   dontBuild = true;
 
   passthru = {
