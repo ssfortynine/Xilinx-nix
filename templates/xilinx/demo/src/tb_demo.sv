@@ -1,4 +1,5 @@
 `timescale 1ns/1ps
+
 module tb_demo();
     logic       clk;
     logic       reset;
@@ -20,12 +21,17 @@ module tb_demo();
     initial begin
         reset = 1;
         enable = 0;
-        #20;
+
+        #50;
         reset = 0;
-        #10;
+        $display("[%0t] Reset released, waiting for IP Lock...", $time);
+
+        #100;
         enable = 1;
-        #1000; 
+        
+        #2000; 
         $display("[%0t] Simulation finished", $time);
         $finish;
     end
+
 endmodule

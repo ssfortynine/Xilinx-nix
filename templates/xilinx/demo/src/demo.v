@@ -1,27 +1,30 @@
-//-----------------------------------------------------
-// Design Name : up_counter
-// File Name   : up_counter.v
-// Function    : Up counter
-// Coder      : Deepak
-//-----------------------------------------------------
-module demo    (
-out     ,  // Output of the counter
-enable  ,  // enable for counter
-clk     ,  // clock Input
-reset      // reset Input
+// demo.v
+module demo (
+    input  wire       clk,      
+    input  wire       reset,    
+    input  wire       enable,
+    output wire [7:0] out
 );
-//----------Output Ports--------------
-    output [7:0] out;
-//------------Input Ports--------------
-     input enable, clk, reset;
-//------------Internal Variables--------
-    reg [7:0] out;
-//-------------Code Starts Here-------
-always @(posedge clk)
-if (reset) begin
-  out <= 8'b0 ;
-end else if (enable) begin
-  out <= out + 1;
-end
+
+    wire clk_inner;
+    wire locked;
+    reg [7:0] counter;
+
+    clk_wiz_0 ip_clk_gen (
+        .clk_in1  (clk),        
+        .reset    (reset),      
+        .clk_out1 (clk_inner),  
+        .locked   (locked)      
+    );
+
+    always @(posedge clk_inner or posedge reset) begin
+        if (reset) begin
+            counter <= 8'h0;
+        end else if (enable && locked) begin
+            counter <= counter + 1'b1;
+        end
+    end
+
+    assign out = counter;
 
 endmodule
