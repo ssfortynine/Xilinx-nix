@@ -10,11 +10,11 @@ novas.conf
 .cxl*
 xar.prj
 compile.prj
-synopsys_sim.setup
+synopsys_sim.setup*
 
 vivado.jou
 vivado.log
-compile_simlib.log
+compile_simlib.log*
 cxl_error.log
 vivado_*
 simlib_dir/
