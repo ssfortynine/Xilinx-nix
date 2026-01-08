@@ -25,7 +25,9 @@ lib.makeScope newScope (
     };
 
     # vivado simulation flow
-    vivado-sim = scope.callPackage ./vivado-sim.nix { };
+    vivado-scripts = scope.callPackage ./vivado-sim.nix { };
+    vivado-run-sim = scope.vivado-scripts.run-sim;
+    vivado-view-waves = scope.vivado-scripts.view-waves;
 
     # Verdi
     verdi = scope.callPackage ./verdi.nix { };

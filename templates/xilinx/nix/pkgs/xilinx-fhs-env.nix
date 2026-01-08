@@ -144,6 +144,14 @@ pkgs.buildFHSEnv {
       graphviz
       unzip
       nettools
+
+      # vcs simulation requirements
+      bc
+      elfutils
+      time
+      util-linux
+      libnsl               
+      binutils
     ]
   );
 }
