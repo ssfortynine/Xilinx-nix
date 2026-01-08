@@ -36,12 +36,25 @@
 
         flake.overlays.default = overlay;
         perSystem = 
-        { system, pkgs, ... }:
+        { system, pkgs, lib, ... }:
+        let
+          clean-script = pkgs.writeShellScriptBin "clean" ''
+            echo "Cleaning build artifacts..."
+            ${lib.getBin pkgs.git}/bin/git clean -fdX .
+            echo "Clean complete."
+          '';
+        in
         {
           _module.args.pkgs = import nixpkgs {
               inherit system;
               overlays = [ overlay ];
               config.allowUnfree = true; 
+          };
+
+          packages.default = clean-script;
+          apps.clean = {
+            type = "app";
+            program = lib.getExe clean-script;
           };
 
           legacyPackages = pkgs;
@@ -53,17 +66,15 @@
           };
 
           devShells.default = pkgs.mkShell {
-            # inputsFrom = [ 
-            #   pkgs.demo.verilated 
-            #   pkgs.demo.vcs 
-            # ];
-
             packages = with pkgs; [
               # 开发辅助
               nixd
               verible
               gtkwave  
-              # xilinx-fhs-env
+              pkgs.git
+              clean-script
+              xilinx-fhs-env
+              vcs-fhs-env
             ];
 
             shellHook = ''

@@ -24,6 +24,9 @@ lib.makeScope newScope (
       enableTrace = true; 
     };
 
+    # vivado simulation flow
+    vivado-sim = scope.callPackage ./vivado-sim.nix { };
+
     # Verdi
     verdi = scope.callPackage ./verdi.nix { };
   }

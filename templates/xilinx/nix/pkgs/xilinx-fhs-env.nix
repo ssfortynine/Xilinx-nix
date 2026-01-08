@@ -21,12 +21,7 @@ pkgs.buildFHSEnv {
   name = "xilinx-fhs-env";
 
   profile = ''
-    export PATH=/usr/bin:/bin:/usr/sbin:/sbin:$PATH
     export LC_NUMERIC="en_US.UTF-8"
-    export ORIGINAL_PATH="/usr/bin:/bin:/usr/sbin:/sbin"
-    export ORIGINAL_LD_PATH="/lib:/lib64:/usr/lib:/usr/lib64"
-
-
     echo "[Debug] Pre-source path: $(which gcc || echo 'not found')"
     echo "[Debug] GCC Version: $(gcc --version | head -n 1)"
 
@@ -81,10 +76,6 @@ pkgs.buildFHSEnv {
     export LD_LIBRARY_PATH=$VERDI_HOME/share/NPI/lib/LINUX64:$LD_LIBRARY_PATH
     echo "[Debug] Unified EDA Environment Loaded."
 
-    export VCS_GPP_PATH="/usr/bin/g++"
-    export VCS_CC_PATH="/usr/bin/gcc"
-    export CC="/usr/bin/gcc"
-    export CXX="/usr/bin/g++"
     echo "[Debug] Post-source path: $(which gcc || echo 'not found')"
     echo "[Debug] GCC Version: $(gcc --version | head -n 1)"
 

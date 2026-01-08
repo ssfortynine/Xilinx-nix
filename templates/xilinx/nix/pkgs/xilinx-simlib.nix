@@ -23,8 +23,6 @@ stdenv.mkDerivation {
     cat > gen_lib.tcl <<EOF
       set_msg_config -id {Vivado 12-7166} -new_severity {WARNING}
       set_msg_config -id {Common 17-39} -new_severity {WARNING}
-      set_param project.vcs_vlogan_options "-kdb -cpp /usr/bin/g++ -cc /usr/bin/gcc"
-      set_param project.vcs_vhdlan_options "-kdb"
       compile_simlib -simulator vcs -family all -library all -directory ./simlib_dir
       exit
     EOF
@@ -38,7 +36,6 @@ stdenv.mkDerivation {
     runHook preInstall
     
     mkdir -p $out
-    # 将编译好的库拷贝到输出目录
     cp -r simlib_dir/* $out/
     
     runHook postInstall

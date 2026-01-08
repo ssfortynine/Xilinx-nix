@@ -16,3 +16,7 @@ vivado.jou
 vivado.log
 compile_simlib.log
 cxl_error.log
+vivado_*
+simlib_dir/
+vivado_prj/
+
