@@ -1,8 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # SPDX-FileCopyrightText: 2024 Jiuyang Liu <liu@jiuyang.me>
 
-# This is a bit dirty.
-# Since VCS are close source toolchains, we have no way to fix it for environment changes.
+# This is a bit dirty. Since VCS are close source toolchains, we have no way to fix it for environment changes.
 # So here we have to lock the whole nixpkgs to a working version.
 #
 # For convenience, we still use the nixpkgs defined in flake to "callPackage" this derivation.
@@ -90,6 +89,7 @@ lockedPkgs.buildFHSEnv {
           hash = "sha256-22JcerO7PudXs5JqXPqNnhw5ka0kcHqD3eil7yv3oH4=";
         };
       })
+
       keyutils
       graphite2
       libpulseaudio

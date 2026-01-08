@@ -10,3 +10,15 @@ templates/xilinx/vcs-emu-journal.log
 templates/xilinx/novas.rc
 templates/xilinx/novas.conf
 vcs-emu-journal.log
+vivado.jou
+vivado.log
+templates/xilinx/.Xil/
+templates/xilinx/.cxl*
+templates/xilinx/xar.prj
+templates/xilinx/vivado.jou
+templates/xilinx/vivado.log
+templates/xilinx/compile.prj
+templates/xilinx/compile_simlib.log
+templates/xilinx/cxl_error.log
+templates/xilinx/synopsys_sim.setup
+

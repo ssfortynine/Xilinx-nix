@@ -1,12 +1,34 @@
-{ pkgs ? import <nixpkgs> { }, getEnv' }:
+{ pkgs ? import <nixpkgs> { }, 
+  fetchFromGitHub,
+  getEnv', 
+}:
 let
+  nixpkgsSrcs = fetchFromGitHub {
+    owner = "NixOS";
+    repo = "nixpkgs";
+    rev = "c374d94f1536013ca8e92341b540eba4c22f9c62";
+    hash = "sha256-Z/ELQhrSd7bMzTO8r7NZgi9g5emh+aRKoCdaAv5fiO0=";
+  };
+
+  lockedPkgs = import nixpkgsSrcs { system = "x86_64-linux"; };
+  gcc9 = pkgs.lib.hiPrio lockedPkgs.gcc9;
+
   xilinxHome = getEnv' "XILINX_STATIC_HOME"; 
+  vcStaticHome = getEnv' "VC_STATIC_HOME";
+  lmLicenseFile = getEnv' "LM_LICENSE_FILE";
 in
 pkgs.buildFHSEnv {
   name = "xilinx-fhs-env";
 
   profile = ''
+    export PATH=/usr/bin:/bin:/usr/sbin:/sbin:$PATH
     export LC_NUMERIC="en_US.UTF-8"
+    export ORIGINAL_PATH="/usr/bin:/bin:/usr/sbin:/sbin"
+    export ORIGINAL_LD_PATH="/lib:/lib64:/usr/lib:/usr/lib64"
+
+
+    echo "[Debug] Pre-source path: $(which gcc || echo 'not found')"
+    echo "[Debug] GCC Version: $(gcc --version | head -n 1)"
 
     if [ -d "${xilinxHome}/Vivado" ]; then
       for s in ${xilinxHome}/Vivado/*/settings64.sh; do
@@ -29,13 +51,51 @@ pkgs.buildFHSEnv {
       for s in ${xilinxHome}/Vitis/*/settings64.sh; do
         if [ -f "$s" ]; then
           echo "[FHS] Sourcing Vitis settings from $s"
-          source "$s"
+          source "$s" 
         fi
       done
     fi
-    
-    echo "Xilinx FHS Environment Loaded."
-    echo "Check 'vitis' or 'vivado' command."
+    echo "[FHS] Xilinx FHS Environment Loaded."
+    export LD_LIBRARY_PATH="$ORIGINAL_LD_PATH"
+    export PATH="$ORIGINAL_PATH:$PATH"
+
+    export VC_STATIC_HOME=${vcStaticHome}
+    export TCL_TZ=UTC
+    export VC_STATIC_HOME=$VC_STATIC_HOME
+    export VCS_HOME=$VC_STATIC_HOME/vcs/U-2023.03-SP2
+    export VCS_TARGET_ARCH=amd64
+    export VCS_ARCH_OVERRIDE=linux
+    export VERDI_HOME=$VC_STATIC_HOME/verdi/V-2023.12-SP2
+    export NOVAS_HOME=$VC_STATIC_HOME/verdi/V-2023.12-SP2
+    export SNPS_VERDI_CBUG_LCA=1
+    export LM_LICENSE_FILE=${lmLicenseFile}
+
+    export PATH=$PATH:$VCS_HOME/gui/dve/bin:$PATH
+    export PATH=$PATH:$VCS_HOME/bin:$PATH
+    export PATH=$PATH:$VERDI_HOME/bin:$PATH
+    export PATH=$PATH:$SCL_HOME/linux64/bin:$PATH
+
+    export QT_X11_NO_MITSHM=1
+    export LD_LIBRARY_PATH=/usr/lib64/
+    export LD_LIBRARY_PATH=$VERDI_HOME/share/PLI/lib/LINUX64:$LD_LIBRARY_PATH
+    export LD_LIBRARY_PATH=$VERDI_HOME/share/NPI/lib/LINUX64:$LD_LIBRARY_PATH
+    echo "[Debug] Unified EDA Environment Loaded."
+
+    export VCS_GPP_PATH="/usr/bin/g++"
+    export VCS_CC_PATH="/usr/bin/gcc"
+    export CC="/usr/bin/gcc"
+    export CXX="/usr/bin/g++"
+    echo "[Debug] Post-source path: $(which gcc || echo 'not found')"
+    echo "[Debug] GCC Version: $(gcc --version | head -n 1)"
+
+    export _oldVcsEnvPath="$PATH"
+    preHook() {
+      PATH="$PATH:$_oldVcsEnvPath"
+    }
+    export -f preHook
+
+
+    echo "[FHS] VCS FHS Environment Loaded."
   '';
 
   targetPkgs = (ps: with ps; 
@@ -81,6 +141,8 @@ pkgs.buildFHSEnv {
           sha256 = "sha256-Nxnil18vsoYF3zR5w4CvLPSrTpGeFQZSfkx2cK//bjw=";
         };
       }))
+      gcc9
+      which
 
       # to compile some xilinx examples
       opencl-clhpp
@@ -89,7 +151,6 @@ pkgs.buildFHSEnv {
 
       # from installLibs.sh
       graphviz
-      (lib.hiPrio gcc)
       unzip
       nettools
     ]
