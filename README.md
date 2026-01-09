@@ -38,7 +38,7 @@
 mkdir new-fpga-project
 cd new-fpga-project
 git init
-nix flake init -t github:ssfortynine/xilinx-nix#xilinx
+nix flake init -t github:ssfortynine/Xilinx-nix#xilinx
 ```
 
 ### 项目结构
