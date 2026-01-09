@@ -72,7 +72,12 @@ nix run '.#demo.verdi' --impure
 
 - **编译 Xilinx 仿真库 (VCS)**：
   ```bash
-  nix run '.#xilinx-simlib' --impure
+  nix run '.#xilinx-simlib' --impure # 有bug正在更改
+  ```
+  ```bash
+  nix develop --impure
+  xilinx-fhs-env
+  vivado -mode batch -notrace -eval "compile_simlib -simulator vcs -family all -library all -directory ./simlib_dir"
   ```
 - **一键流水线 (在开发 Shell 中直接运行)**：
   - `sim-run`: 自动调用 Vivado 生成脚本 -> 自动 Patch 脚本路径 -> 调用 VCS 执行编译与仿真。
@@ -171,7 +176,12 @@ nix run '.#demo.verdi' --impure
 
 - **Compile Xilinx Simlibs (VCS)**:
   ```bash
-  nix run '.#xilinx-simlib' --impure
+  nix run '.#xilinx-simlib' --impure # There is a bug and it is being fixed 
+  ```
+  ```bash
+  nix develop --impure
+  xilinx-fhs-env
+  vivado -mode batch -notrace -eval "compile_simlib -simulator vcs -family all -library all -directory ./simlib_dir"
   ```
 - **Unified Pipeline (Run directly within the dev shell)**:
   - `sim-run`: Automated workflow: Call Vivado to generate scripts -> Auto-patch script paths -> Execute VCS compilation & simulation.
