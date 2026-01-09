@@ -1,12 +1,12 @@
 `timescale 1ns/1ps
 
-module tb_vivado_demo();
+module tb_test_demo();
     logic       clk;
     logic       reset;
     logic       enable;
     logic [7:0] out;
 
-    vivado_demo uut (
+    test_demo uut (
         .clk(clk),
         .reset(reset),
         .enable(enable),

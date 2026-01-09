@@ -1,4 +1,4 @@
-module vivado_demo (
+module test_demo (
     input  wire       clk,      
     input  wire       reset,    
     input  wire       enable,
