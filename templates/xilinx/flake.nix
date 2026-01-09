@@ -113,8 +113,8 @@
           
             echo -e "\n''${Y}[Xilinx Workflow Scripts]''${NC}"
             echo -e "  - ''${G}nix run '.#xilinx-simlib' --impure''${NC}"
-            echo -e "  - ''${G}nix run '.#demo.sim-run' --impure''${NC}"
-            echo -e "  - ''${G}nix run '.#demo.view-waves' --impure''${NC}"
+            echo -e "  - ''${G}nix run '.#demo.vivado-sim-run' --impure''${NC}"
+            echo -e "  - ''${G}nix run '.#demo.vivado-view-waves' --impure''${NC}"
           
             echo -e "\n''${Y}[Interactive FHS Envs]''${NC}"
             echo -e "  - ''${G}xilinx-fhs-env''${NC}"
