@@ -84,8 +84,8 @@ nix run '.#demo.verdi' --impure
   - `view-waves`: 自动搜寻生成的 `.fsdb` 和 `.daidir` 并启动交互式 Verdi。
 
   ```bash
-  nix run '.#demo.sim-run' --impure
-  nix run '.#demo.view-waves' --impure
+  nix run '.#demo.vivado-sim-run' --impure
+  nix run '.#demo.vivado-view-waves' --impure
   ```
 
 ## 维护建议
@@ -188,8 +188,8 @@ nix run '.#demo.verdi' --impure
   - `view-waves`: Automatically search for generated `.fsdb` and `.daidir` files and launch interactive Verdi.
 
   ```bash
-  nix run '.#demo.sim-run' --impure
-  nix run '.#demo.view-waves' --impure
+  nix run '.#demo.vivado-sim-run' --impure
+  nix run '.#demo.vivado-view-waves' --impure
   ```
 
 ### Maintenance
