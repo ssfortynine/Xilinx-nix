@@ -2,7 +2,8 @@
 let
   sim-run = writeShellScriptBin "sim-run" ''
     set -e
-    export XILINX_SIMLIB_PATH="${xilinx-simlib}"
+    export XILINX_SIMLIB_PATH="$(readlink -f ./simlib_dir)"
+    # export XILINX_SIMLIB_PATH="${xilinx-simlib}"
     
     echo "[nix] Generating VCS scripts via Vivado"
     ${xilinx-fhs-env}/bin/xilinx-fhs-env -c "vivado -mode batch -source setup_vcs_verdi.tcl"
