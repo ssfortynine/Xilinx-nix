@@ -1,12 +1,19 @@
-{ lib, newScope }:
+{ lib, newScope, sbt-nix-lib }:
 lib.makeScope newScope (
   scope:
   let
     designTarget = "demo";
+    genDesignTarget = "MyTopLevel";
   in
   {
     # RTL
-    rtl = scope.callPackage ./rtl.nix { target = designTarget; };
+    # rtl = scope.callPackage ./rtl.nix { target = designTarget; };
+
+    # Spinal RTL
+    rtl = scope.callPackage ./spinal-rtl.nix { 
+      mkSbtDerivation = sbt-nix-lib;
+      target = genDesignTarget; 
+    };
 
     # Verilator
     verilated = scope.callPackage ./verilated.nix { 
@@ -16,6 +23,7 @@ lib.makeScope newScope (
 
     # VCS
     vcs = scope.callPackage ./vcs.nix { 
+      target = genDesignTarget;
       enableTrace = false; 
     };
     vcs-trace = scope.vcs.override { enableTrace = true; };

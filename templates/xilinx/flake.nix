@@ -11,6 +11,7 @@
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sbt-nix.url = "github:zaninime/sbt-derivation";
   };
   
   outputs = 
@@ -18,6 +19,7 @@
       self, 
       nixpkgs,
       flake-parts,
+      sbt-nix,
       ...
     }:
     let 
@@ -43,11 +45,14 @@
             ${lib.getBin pkgs.git}/bin/git clean -fdX .
             echo "Clean complete."
           '';
+          sbt-nix-overlay = final: prev: {
+            mkSbtDerivation = sbt-nix.mkSbtDerivation.${system};
+          };
         in
         {
           _module.args.pkgs = import nixpkgs {
               inherit system;
-              overlays = [ overlay ];
+              overlays = [ sbt-nix-overlay overlay ];
               config.allowUnfree = true; 
           };
 
@@ -130,4 +135,5 @@
         };
     };
 }
+
 

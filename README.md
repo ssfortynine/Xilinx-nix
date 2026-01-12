@@ -167,7 +167,7 @@ This project extends `nixpkgs` via an Overlay. You can build or run different co
 
 **Execution Examples:**
 ```bash
-nix run '.#demo.rtl' --impure        # Essential first step before compilation
+nix build '.#demo.rtl' --impure        # Essential first step before compilation
 nix run '.#demo.vcs-trace' --impure -- +dump-start=0 +dump-end=10000 +wave-path=trace
 nix run '.#demo.verdi' --impure 
 ```
