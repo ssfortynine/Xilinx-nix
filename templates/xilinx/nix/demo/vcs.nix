@@ -5,6 +5,7 @@
   rtl,
   vcs-fhs-env,
   runCommand,
+  target,
   enableTrace ? false,
   enableCover ? true,
 }:
@@ -46,7 +47,7 @@ stdenv.mkDerivation (finalAttr: {
     ${lib.optionalString enableCover ''
       -cm line+cond+fsm+tgl+branch+assert \
       -cm_dir ${coverageName} ''} \
-      -top tb_demo \
+      -top tb_${target} \
       -file filelist.f \
       -o ${binName}
 
