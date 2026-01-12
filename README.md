@@ -15,6 +15,7 @@
 - **自动化联合仿真**：提供从 Vivado IP 生成到 VCS 编译、Verdi 查看波形的全自动化流水线。
 - **双仿真器支持**：支持传统的 Verilator 和商业级 VCS 仿真流。
 - **确定性**：通过锁定 Nixpkgs 版本及 `buildFHSEnv`，确保 EDA 工具依赖的系统库环境高度稳定。
+- **SpinalHDL 支持**：集成了基于 Scala 的 SpinalHDL 开发流，支持自动生成 Verilog 并无缝接入仿真流水线。
 
 ### 准备工作
 
@@ -64,7 +65,7 @@ nix flake init -t github:ssfortynine/Xilinx-nix#xilinx
 
 **构建示例：**
 ```bash
-nix run '.#demo.rtl' --impure  # 运行编译前必须要运行该步骤
+nix build '.#demo.rtl' --impure  # 运行编译前必须要运行该步骤
 nix run '.#demo.vcs-trace' --impure -- +dump-start=0 +dump-end=10000 +wave-path=trace
 nix run '.#demo.verdi' --impure 
 ```
@@ -87,6 +88,8 @@ nix run '.#demo.verdi' --impure
   nix run '.#demo.vivado-sim-run' --impure
   nix run '.#demo.vivado-view-waves' --impure
   ```
+#### 3. SpinalHDL 开发流
+需要在`default.nix`中修改是使用经典 rtl 仿真还是 spinal-rtl 仿真，其他流程与基础 rtl 仿真相同。
 
 ## 维护建议
 ### 更新依赖
@@ -118,6 +121,7 @@ MIT
 - **Automated Joint Simulation**: Provides a full pipeline from Vivado IP generation to VCS compilation and Verdi waveform viewing.
 - **Dual Simulator Support**: Supports both open-source Verilator and commercial-grade Synopsys VCS simulation flows.
 - **Determinism**: By locking Nixpkgs versions and using `buildFHSEnv`, it ensures highly stable system library environments for brittle EDA tools.
+- **SpinalHDL Support**: Integrates a Scala-based SpinalHDL development workflow, supports automatic generation of Verilog and seamless integration into simulation pipelines.
 
 ### Prerequisites
 
@@ -191,6 +195,8 @@ nix run '.#demo.verdi' --impure
   nix run '.#demo.vivado-sim-run' --impure
   nix run '.#demo.vivado-view-waves' --impure
   ```
+#### 3. SpinalHDL Development Flow 
+You need to modify `default.nix` to determine whether to use classic RTL simulation or spinal-RTL simulation; the rest of the process is the same as basic RTL simulation.
 
 ### Maintenance
 
