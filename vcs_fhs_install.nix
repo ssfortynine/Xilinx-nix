@@ -1,5 +1,11 @@
-{ pkgs ? import <nixpkgs> {} }:
-
+let
+  nixpkgs-src = fetchTarball "https://github.com/NixOS/nixpkgs/archive/nixos-25.11.tar.gz";
+  pkgs = import nixpkgs-src {
+    config = {
+      allowUnfree = true; 
+    };
+  };
+in
 # Create an FHS-compatible environment for running Synopsys VCS tools.
 # FHS (Filesystem Hierarchy Standard) environments help proprietary software
 # that expects standard Linux paths to work correctly under NixOS.

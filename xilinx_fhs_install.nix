@@ -1,5 +1,11 @@
-{ pkgs ? import <nixpkgs> {} }:
-
+let
+  nixpkgs-src = fetchTarball "https://github.com/NixOS/nixpkgs/archive/nixos-25.11.tar.gz";
+  pkgs = import nixpkgs-src {
+    config = {
+      allowUnfree = true; 
+    };
+  };
+in
 (pkgs.buildFHSUserEnv {
   name = "xilinx-install-env";
     targetPkgs = (ps: with ps; 
